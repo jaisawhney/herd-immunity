@@ -9,7 +9,7 @@ from logger import Logger
 from virus import Virus
 
 
-# random.seed(42)
+random.seed(42)
 
 
 class Simulation(object):

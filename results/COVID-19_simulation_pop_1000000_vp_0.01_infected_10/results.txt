@@ -1,0 +1,53 @@
+Running simulation for virus "COVID-19" on 2021-12-01
+Population: 1000000, Vaccination Percentage: 0.01, Mortality Rate: 0.034, Reproduction Rate 0.98
+
+Time step 1 has ended:
+•    # Infected: 978
+•    # Dead: 0
+•    Population State:
+     ◦    Total Living: 1000000
+     ◦    Total Dead: 0
+     ◦    Total Vaccinated: 10010
+
+Time step 2 has ended:
+•    # Infected: 94648
+•    # Dead: 36
+•    Population State:
+     ◦    Total Living: 999964
+     ◦    Total Dead: 36
+     ◦    Total Vaccinated: 10951
+
+Time step 3 has ended:
+•    # Infected: 7959369
+•    # Dead: 3074
+•    Population State:
+     ◦    Total Living: 996890
+     ◦    Total Dead: 3110
+     ◦    Total Vaccinated: 98098
+
+Time step 4 has ended:
+•    # Infected: 11093
+•    # Dead: 30682
+•    Population State:
+     ◦    Total Living: 966208
+     ◦    Total Dead: 33792
+     ◦    Total Vaccinated: 966094
+
+Time step 5 has ended:
+•    # Infected: 0
+•    # Dead: 5
+•    Population State:
+     ◦    Total Living: 966203
+     ◦    Total Dead: 33797
+     ◦    Total Vaccinated: 966213
+
+Simulation Ended
+•    Total Living: 966203
+•    Total Dead: 33797
+•    Total infected: 8066088
+•    # Vaccinations: 966213
+•    Interactions:
+     ◦    Total: 8230388
+     ◦    # Resulted in death: 33797
+     ◦    # Resulted in vaccinations: 956213
+•    Reason for end: No infections remaining

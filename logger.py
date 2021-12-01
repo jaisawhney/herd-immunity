@@ -9,7 +9,7 @@ class Logger(object):
 
         try:
             os.mkdir(self.folder_name)
-        except OSError as error:
+        except OSError:
             # Folder already exists - ignore
             pass
 
