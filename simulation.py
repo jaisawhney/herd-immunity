@@ -8,7 +8,6 @@ from person import Person
 from logger import Logger
 from virus import Virus
 
-
 random.seed(42)
 
 
@@ -101,24 +100,23 @@ class Simulation(object):
         self.timestep_dead = 0
         self.timestep_infected = 0
         for person in self.population:
-            if not person.is_alive or not person.virus:
-                continue
-            i = 0
-            while i < 100:
-                random_person = random.choice(self.population)
-                if not random_person.is_alive:
-                    continue
-                self.interaction(person, random_person)
-                i += 1
+            if person.is_alive and person.virus:
+                i = 0
+                while i < 100:
+                    random_person = random.choice(self.population)
+                    if not random_person.is_alive:
+                        continue
+                    self.interaction(person, random_person)
+                    i += 1
 
-            # Check if the person has died after all interactions
-            survival = person.check_survival()
-            if not survival:
-                self.timestep_dead += 1
-                self.total_dead += 1
-                self.total_interactions_deaths += 1
-            else:
-                self.total_interactions_vaccinated += 1
+                # Check if the person has died after all interactions
+                survival = person.check_survival()
+                if not survival:
+                    self.timestep_dead += 1
+                    self.total_dead += 1
+                    self.total_interactions_deaths += 1
+                else:
+                    self.total_interactions_vaccinated += 1
                 self.total_vaccinated += 1
         self._infect_newly_infected()
 
@@ -154,19 +152,22 @@ class Simulation(object):
 
 
 if __name__ == "__main__":
-    params = sys.argv[1:]
-    virus_name = str(params[0])
-    repro_num = float(params[1])
-    mortality_rate = float(params[2])
+    try:
+        params = sys.argv[1:]
+        virus_name = str(params[0])
+        repro_num = float(params[1])
+        mortality_rate = float(params[2])
 
-    pop_size = int(params[3])
-    vaccination_percentage = float(params[4])
+        pop_size = int(params[3])
+        vaccination_percentage = float(params[4])
 
-    if len(params) == 6:
-        initial_infected = int(params[5])
-    else:
-        initial_infected = 1
+        if len(params) == 6:
+            initial_infected = int(params[5])
+        else:
+            initial_infected = 1
 
-    virus = Virus(virus_name, repro_num, mortality_rate)
-    sim = Simulation(virus, pop_size, vaccination_percentage, initial_infected)
-    sim.run()
+        virus = Virus(virus_name, repro_num, mortality_rate)
+        sim = Simulation(virus, pop_size, vaccination_percentage, initial_infected)
+        sim.run()
+    except KeyboardInterrupt:
+        pass
