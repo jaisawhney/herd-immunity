@@ -23,7 +23,7 @@ class Simulation(object):
         self.initial_infected = initial_infected
 
         # Logger
-        self.folder_name = f"./results/{virus_name}_simulation_pop_{population_size}_vp_{vaccination_percentage}_infected_{initial_infected}"
+        self.folder_name = f"./results/{virus.name}_simulation_pop_{population_size}_vp_{vaccination_percentage}_infected_{initial_infected}"
         self.logger = Logger(self.folder_name)
 
         # Reset every timestep

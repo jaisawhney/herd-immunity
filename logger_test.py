@@ -1,5 +1,4 @@
 from logger import Logger
-
 from datetime import date
 from shutil import rmtree
 
