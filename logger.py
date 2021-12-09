@@ -32,8 +32,7 @@ class Logger(object):
                        f"     ◦    Total Vaccinated: {total_vaccinated}\n\n")
 
     def append_end_results(self, pop_size, total_alive, total_dead, total_vaccinated, interactions_vaccinated,
-                           interactions_deaths,
-                           total_interactions, total_infected):
+                           interactions_deaths, total_infected):
         with open(f"{self.folder_name}/results.txt", "a") as file:
             reason = "Population Dead" if pop_size == total_dead else "No infections remaining"
 
@@ -43,7 +42,6 @@ class Logger(object):
                        f"•    Total infected: {total_infected}\n"
                        f"•    # Vaccinations: {total_vaccinated}\n"
                        f"•    Interactions:\n"
-                       f"     ◦    Total: {total_interactions}\n"
                        f"     ◦    # Resulted in death: {interactions_deaths}\n"
                        f"     ◦    # Resulted in vaccinations: {interactions_vaccinated}\n"
                        f"•    Reason for end: {reason}")

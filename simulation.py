@@ -30,12 +30,11 @@ class Simulation(object):
         self.timestep_dead = 0
         self.timestep_infected = 0
 
-        # Tallies for the simulation
+        # Counters for the simulation
         self.total_dead = 0
-        self.total_infected = 0
-        self.total_interactions = 0
-        self.total_interactions_vaccinated = 0
         self.total_vaccinated = 0
+        self.total_infected = 0
+        self.total_interactions_vaccinated = 0
         self.total_interactions_deaths = 0
 
         self.logger.write_metadata(self.population_size, self.vaccination_percentage, self.virus.name,
@@ -53,14 +52,12 @@ class Simulation(object):
         while len(people) != self.population_size:
             if people_infected != initial_infected:
                 person = Person(len(people), False, self.virus)
-                self.newly_infected.append(person.ID)
                 people_infected += 1
+            elif initial_vaccinated != people_vaccinated:
+                person = Person(len(people), True)
+                people_vaccinated += 1
             else:
-                if initial_vaccinated != people_vaccinated:
-                    person = Person(len(people), True)
-                    people_vaccinated += 1
-                else:
-                    person = Person(len(people), False)
+                person = Person(len(people), False)
             people.append(person)
         return people
 
@@ -87,12 +84,13 @@ class Simulation(object):
                                       self.timestep_dead, self.total_dead, people_alive,
                                       self.total_vaccinated)
             should_continue = self._simulation_should_continue()
-        print(f"The simulation has ended after {time_step_counter} turns.")
 
-        people_alive = len([person for person in self.population if person.is_alive])
+        print(f"The simulation has ended after {time_step_counter} turns.")
         self.logger.append_end_results(self.population_size, people_alive, self.total_dead, self.total_vaccinated,
                                        self.total_interactions_vaccinated, self.total_interactions_deaths,
-                                       self.total_interactions, self.total_infected)
+                                       self.total_infected)
+
+        # Display a pie chart showing the state of the population
         self._display_results()
 
     def time_step(self):
@@ -104,10 +102,9 @@ class Simulation(object):
                 i = 0
                 while i < 100:
                     random_person = random.choice(self.population)
-                    if not random_person.is_alive:
-                        continue
-                    self.interaction(person, random_person)
-                    i += 1
+                    if random_person.is_alive:
+                        self.interaction(person, random_person)
+                        i += 1
 
                 # Check if the person has died after all interactions
                 survival = person.check_survival()
@@ -124,30 +121,25 @@ class Simulation(object):
         assert person.is_alive == True
         assert random_person.is_alive == True
 
-        if not random_person.is_vaccinated and not random_person.virus:
-            self.total_interactions += 1
+        # Check for infection if the random user can be infected and has not already been infected
+        if not random_person.is_vaccinated and not random_person.virus and random_person not in self.newly_infected:
             if random.random() < self.virus.reproduction_rate:
-                self.newly_infected.append(random_person.ID)
+                self.newly_infected.append(random_person)
+                self.timestep_infected += 1
 
     def _infect_newly_infected(self):
-        for sickPersonId in self.newly_infected:
-            person = self.population[sickPersonId]
+        for person in self.newly_infected:
             person.virus = self.virus
-            self.timestep_infected += 1
             self.total_infected += 1
         self.newly_infected = []
 
     def _display_results(self):
-        # Display results
         alive_no_vaccine = len([person for person in self.population if person.is_alive and not person.is_vaccinated])
-
-        fig = plt.figure()
-        ax = fig.add_axes([0, 0, 1, 1])
-        ax.axis("equal")
         slices = ["Non-immune Living", "Dead", "Vaccinated"]
         results = [alive_no_vaccine, self.total_dead, self.total_vaccinated]
-        ax.pie(results, labels=slices, autopct="%1.2f%%")
-        plt.savefig(f"{self.folder_name}/plot.png")
+        plt.pie(results, labels=slices, autopct="%1.2f%%")
+        plt.title("Results", loc="center")
+        plt.savefig(f"{self.folder_name}/results.png")
         plt.show()
 
 

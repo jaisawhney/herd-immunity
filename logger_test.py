@@ -37,7 +37,7 @@ def test_end_msg():
     file_path = "./results/test"
     logger = Logger(file_path)
     logger.append_end_results(10000, 2500, 7500, 2500, 2500,
-                              7500, 80000, 10000)
+                              7500, 10000)
     file = open(f"{file_path}/results.txt", "r")
     file_content = file.read()
     assert file_content == ("Simulation Ended\n"
@@ -46,7 +46,6 @@ def test_end_msg():
                             "•    Total infected: 10000\n"
                             "•    # Vaccinations: 2500\n"
                             "•    Interactions:\n"
-                            "     ◦    Total: 80000\n"
                             "     ◦    # Resulted in death: 7500\n"
                             "     ◦    # Resulted in vaccinations: 2500\n"
                             "•    Reason for end: No infections remaining")
